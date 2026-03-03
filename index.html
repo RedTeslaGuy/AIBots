@@ -159,6 +159,29 @@
       50% { opacity: 0.7; }
     }
 
+    #followups h3 {
+      margin-top: 16px;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    #followups ul {
+      margin-top: 8px;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    #followups li {
+      margin-bottom: 6px;
+    }
+
+    #followups a {
+      color: #ffeaa7;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
     @media (max-width: 768px) {
       .container {
         padding: 24px;
@@ -173,25 +196,61 @@
 <body>
   <div class="container">
     <h1>My AI Helper</h1>
-    <p class="subtitle">Ask anything.. (travel, food, coding, etc.):</p>
+    <p class="subtitle">Ask anything you need help with (travel, food, coding, etc.):</p>
     <textarea id="question" placeholder="Type your question here..."></textarea>
     <br>
     <button onclick="ask()">Ask AI</button>
     <div id="answer"></div>
+    <div id="followups"></div>
   </div>
 
   <script>
+    const followupsDiv = document.getElementById('followups');
+
+    function renderFollowups() {
+      const followups = [
+        "Which has the best South Indian food in Cary",
+        "Cheapest Indian restaurants in Cary with good ratings",
+        "Indian restaurants in Cary open now on Tuesday",
+        "Must-try dishes at Himalayan Nepali Cuisine",
+        "Vegetarian Indian options in Cary restaurants"
+      ];
+
+      followupsDiv.innerHTML = `
+        <h3>Follow-ups</h3>
+        <ul>
+          ${followups.map(q => `
+            <li>
+              <a href="#" class="followup-link">${q}</a>
+            </li>
+          `).join('')}
+        </ul>
+      `;
+
+      document.querySelectorAll('.followup-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const text = e.target.textContent;
+          document.getElementById('question').value = text;
+          ask();
+        });
+      });
+    }
+
     async function ask() {
       const question = document.getElementById('question').value.trim();
       const answerDiv = document.getElementById('answer');
+
       if (!question) {
         answerDiv.textContent = "Please enter a question.";
         answerDiv.classList.remove('thinking');
+        followupsDiv.innerHTML = "";
         return;
       }
 
       answerDiv.textContent = "🤔 Thinking...";
       answerDiv.className = 'thinking';
+      followupsDiv.innerHTML = "";
 
       try {
         const res = await fetch('https://chips-toddler-family-containers.trycloudflare.com/ask', {
@@ -204,6 +263,7 @@
           answerDiv.textContent = "Error: " + data.error;
         } else {
           answerDiv.textContent = data.answer;
+          renderFollowups();
         }
       } catch (e) {
         answerDiv.textContent = "Request failed: " + e.message;
@@ -211,7 +271,7 @@
       answerDiv.classList.remove('thinking');
     }
 
-    // Allow Enter key to submit
+    // Allow Ctrl+Enter to submit
     document.getElementById('question').addEventListener('keypress', function(e) {
       if (e.key === 'Enter' && e.ctrlKey) {
         ask();

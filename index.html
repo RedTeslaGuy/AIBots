@@ -207,11 +207,14 @@
   <script>
     const followupsDiv = document.getElementById('followups');
 
-    function renderFollowups(followups) {
-      if (!followups || !followups.length) {
-        followupsDiv.innerHTML = "";
-        return;
-      }
+    function renderFollowups() {
+      const followups = [
+        "Which has the best South Indian food in Cary",
+        "Cheapest Indian restaurants in Cary with good ratings",
+        "Indian restaurants in Cary open now on Tuesday",
+        "Must-try dishes at Himalayan Nepali Cuisine",
+        "Vegetarian Indian options in Cary restaurants"
+      ];
 
       followupsDiv.innerHTML = `
         <h3>Follow-ups</h3>
@@ -260,7 +263,7 @@
           answerDiv.textContent = "Error: " + data.error;
         } else {
           answerDiv.textContent = data.answer;
-          renderFollowups(data.followups);
+          renderFollowups();
         }
       } catch (e) {
         answerDiv.textContent = "Request failed: " + e.message;

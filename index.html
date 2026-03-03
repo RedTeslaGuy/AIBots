@@ -173,7 +173,7 @@
 <body>
   <div class="container">
     <h1>My AI Helper</h1>
-    <p class="subtitle">Ask anything (travel, food, coding, etc.):</p>
+    <p class="subtitle">Ask anything you need help with (travel, food, coding, etc.):</p>
     <textarea id="question" placeholder="Type your question here..."></textarea>
     <br>
     <button onclick="ask()">Ask AI</button>
@@ -194,12 +194,12 @@
       answerDiv.className = 'thinking';
 
       try {
-        const res = await fetch('https://three-agree-brake-lan.trycloudflare.com/two_agents_demo1.py', {
+        const res = await fetch('https://three-agree-brake-lan.trycloudflare.com/ask', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ question })
         });
-        const data = await res.json();  
+        const data = await res.json();
         if (data.error) {
           answerDiv.textContent = "Error: " + data.error;
         } else {

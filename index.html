@@ -261,9 +261,11 @@
         if (data.error) {
           answerDiv.textContent = "Error: " + data.error;
         } else {
-          // Show only the answer text, not the full JSON
+          // Only show the answer text
           const text = (data.answer || "").trim();
           answerDiv.textContent = text;
+
+          // Then show follow-up hyperlinks
           renderFollowups(data.followups);
         }
       } catch (e) {

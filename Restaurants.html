@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>My Two-Agent AI Helper</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; }
+    textarea { width: 100%; height: 80px; }
+    button { margin-top: 10px; padding: 8px 16px; }
+    #answer { white-space: pre-wrap; margin-top: 20px; border: 1px solid #ccc; padding: 12px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>My AI Helper</h1>
+  <p>Ask anything (travel, food, coding, etc.):</p>
+  <textarea id="question" placeholder="Type your question..."></textarea><br>
+  <button onclick="ask()">Ask</button>
+
+  <div id="answer"></div>
+
+  <script>
+    async function ask() {
+      const question = document.getElementById('question').value.trim();
+      const answerDiv = document.getElementById('answer');
+      if (!question) {
+        answerDiv.textContent = "Please enter a question.";
+        return;
+      }
+
+      answerDiv.textContent = "Thinking...";
+      try {
+        const res = await fetch('https://YOUR-APP.onrender.com/ask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question })
+        });
+        const data = await res.json();
+        if (data.error) {
+          answerDiv.textContent = "Error: " + data.error;
+        } else {
+          answerDiv.textContent = data.answer;
+        }
+      } catch (e) {
+        answerDiv.textContent = "Request failed: " + e;
+      }
+    }
+  </script>
+</body>
+</html>

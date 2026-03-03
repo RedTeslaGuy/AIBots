@@ -194,12 +194,12 @@
       answerDiv.className = 'thinking';
 
       try {
-        const res = await fetch('https://YOUR-APP.onrender.com/ask', {
+        const res = await fetch('https://three-agree-brake-lan.trycloudflare.com/two_agents_demo1.py', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ question })
         });
-        const data = await res.json();
+        const data = await res.json();  
         if (data.error) {
           answerDiv.textContent = "Error: " + data.error;
         } else {
